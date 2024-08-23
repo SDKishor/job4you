@@ -8,6 +8,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+
+const setLoading = (loading) => {
+  return { type: "SET_LOADING", payload: loading };
+};
 
 export default function SignupPage() {
   const [input, setInput] = useState({
@@ -19,6 +24,8 @@ export default function SignupPage() {
     file: "",
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
 
   const changeEventHandeler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -39,6 +46,7 @@ export default function SignupPage() {
     }
 
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
@@ -51,15 +59,17 @@ export default function SignupPage() {
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center max-w-7xl mx-auto h-screen">
-      <Logo size="lg" />
+    <div className="flex flex-col items-center justify-center max-w-7xl mx-5 min-h-screen md:px-12 lg:px-24">
+      <Logo size="lg" className="mb-8" />
       <form
         onSubmit={submitHandlar}
-        className="w-[640px] border border-gray-200 rounded-md p-4 my-10"
+        className="w-full md:w-[640px] border border-gray-200 rounded-md p-4 my-10"
       >
         <h1 className="font-bold text-xl mb-5">Sign Up</h1>
         <div className="flex flex-col w-full pb-5 ">
@@ -113,7 +123,7 @@ export default function SignupPage() {
             onChange={changeEventHandeler}
           />
         </div>
-        <div className=" flex justify-between">
+        <div className=" flex flex-col sm:flex-row justify-between">
           <RadioGroup className="flex items-center gap-4 ">
             <div className="flex items-center justify-between">
               <Input
@@ -154,9 +164,16 @@ export default function SignupPage() {
             />
           </div>
         </div>
-        <Button type="submit" className="w-full my-4" size="lg">
-          Sign Up
-        </Button>
+        {loading ? (
+          <Button className="w-full my-4" size="lg">
+            <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+            please wait
+          </Button>
+        ) : (
+          <Button type="submit" className="w-full my-4" size="lg">
+            Sign Up
+          </Button>
+        )}
         <div className="">
           Already have an account?{" "}
           <Link
@@ -170,3 +187,5 @@ export default function SignupPage() {
     </div>
   );
 }
+
+

@@ -9,11 +9,11 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
   const user = false; 
   return (
-    <div className="flex items-center justify-between mx-auto max-w-7xl h-16 ">
+    <div className="flex items-center justify-between md:mx-auto max-w-7xl h-16 mx-5">
       {/* logo */}
       <Logo/>
 
-      <div className="flex items-center gap-4">
+      <div className="hidden md:flex items-center gap-4 ">
           <ul className="flex gap-2">
             <Link to={"/"}><li>Home</li></Link>
             <Link to={"/jobs"}><li>Jobs</li></Link>
@@ -25,7 +25,7 @@ export default function Navbar() {
             <Button variant="outline" size="sm">Login</Button>
             </Link>
             <Link to={"/signup"}>
-            <Button  className="bg-[#f83002] "size="sm">Sign Up</Button>
+            <Button  className="bg-[#6a38c2] "size="sm">Sign Up</Button>
             </Link>
           </div>
         )

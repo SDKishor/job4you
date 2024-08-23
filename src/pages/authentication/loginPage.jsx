@@ -8,6 +8,9 @@ import Logo from "@/components/sheared/logo";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const [input, setInput] = useState({
@@ -17,6 +20,8 @@ export default function LoginPage() {
   });
   
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
 
   const changeEventHandeler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -25,6 +30,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -37,14 +43,16 @@ export default function LoginPage() {
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center max-w-7xl mx-auto h-screen">
-      <Logo size="lg" />
+    <div className="flex flex-col items-center justify-center max-w-7xl mx-4 h-screen md:px-12 lg:px-24">
+      <Logo size="lg" className="mb-8" />
       <form
         onSubmit={submitHandlar}
-        className="w-[640px] border border-gray-200 rounded-md p-4 my-10"
+        className="w-full md:w-[640px] border border-gray-200 rounded-md p-4 my-10"
       >
         <h1 className="font-bold text-xl mb-5">Login </h1>
 
@@ -107,9 +115,12 @@ export default function LoginPage() {
             </div>
           </RadioGroup>
         </div>
-        <Button type="submit" className="w-full my-4" size="lg">
-          Sign Up
-        </Button>
+        {
+          loading ? <Button className="w-full my-4" size="lg"><Loader2 className="mr-2 w-4 h-4 animate-spin" />please wait</Button> : 
+          <Button type="submit" className="w-full my-4" size="lg">
+          Log in
+          </Button>
+        }
         <div className="">
           Don't have an account?{" "}
           <Link
@@ -123,3 +134,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
