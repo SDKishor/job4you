@@ -3,6 +3,7 @@ import './App.css'
 import Homepage from './pages/homePage'
 import SignupPage from './pages/authentication/signUpPage'
 import LoginPage from './pages/authentication/loginPage'
+import JobsPage from './pages/jobsPage'
 
 const appRouter = createBrowserRouter([
   {
@@ -17,7 +18,10 @@ const appRouter = createBrowserRouter([
     path:"/login",
     element:<LoginPage/>
   },
-  
+  {
+    path:"/jobs",
+    element:<JobsPage/>
+  },
 ])
 
 
