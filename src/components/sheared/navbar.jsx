@@ -5,9 +5,10 @@ import { Button } from "../ui/button";
 import Logo from "../sheared/logo";
 import { LogOut, User2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Navbar() {
-  const user = false; 
+  const {user} = useSelector((state) => state.auth);
   return (
     <div className="flex items-center justify-between md:mx-auto max-w-7xl h-16 mx-5">
       {/* logo */}
@@ -17,7 +18,7 @@ export default function Navbar() {
           <ul className="flex gap-2">
             <Link to={"/"}><li>Home</li></Link>
             <Link to={"/jobs"}><li>Jobs</li></Link>
-            <Link to={"/browser"}><li>Browse</li></Link>
+            <Link to={"/browse"}><li>Browse</li></Link>
           </ul>
         {!user ?(
           <div className="flex items-center gap-2">
@@ -49,7 +50,9 @@ export default function Navbar() {
               <div className="flex justify-between py-2">
               <div className="flex items-center ">
                 <User2/>
+                <Link to={"/profile"}>
                 <Button variant="link_primary"  >View Profile</Button>
+                </Link>
               </div>
               <div className="flex items-center">
                 <LogOut/>

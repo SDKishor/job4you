@@ -1,5 +1,5 @@
 import FilterCard from '@/components/jobpage_components/filterCard'
-import Job from '@/components/jobpage_components/job'
+import Job from '@/components/sheared/job'
 import Navbar from '@/components/sheared/navbar'
 import React from 'react'
 
