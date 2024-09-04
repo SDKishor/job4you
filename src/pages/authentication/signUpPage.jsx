@@ -31,7 +31,8 @@ export default function SignupPage() {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   const changeFileHandeler = (e) => {
-    setInput({ ...input, file: e.target.file?.[0] });
+    console.log(e.target.files?.[0]);
+    setInput({ ...input, file: e.target.files?.[0] });
   };
   const submitHandlar = async (e) => {
     e.preventDefault();
@@ -41,9 +42,10 @@ export default function SignupPage() {
     formData.append("phoneNumber", input.phoneNumber);
     formData.append("password", input.password);
     formData.append("role", input.role);
-    if (input.file) {
-      formData.append("file", input.file);
-    }
+    formData.append("file", input.file);
+    
+    console.log(input.file);
+    
 
     try {
       dispatch(setLoading(true));
@@ -155,7 +157,7 @@ export default function SignupPage() {
             </div>
           </RadioGroup>
           <div className="flex items-center gap-2">
-            <Label htmlFor="profilepic">Profile</Label>
+            <Label htmlFor="profilepic">Profile Picture</Label>
             <Input
               type="file"
               id="profilepic"
